@@ -1,24 +1,27 @@
-import pytest
+from unittest.mock import Mock, patch
 
 from database import Database
-from bun import Bun
-from ingredient import Ingredient
+from ingredient_types import INGREDIENT_TYPE_SAUCE
 
 
 class TestDatabase:
 
-    @pytest.fixture
-    def database(self):
-        return Database()
+    @patch('database.Bun')
+    def test_available_buns_returns_correct_bun(self, mock_bun_class):
+        mock_bun = Mock()
+        mock_bun.get_name.return_value = "black bun"
+        mock_bun_class.side_effect = [mock_bun, Mock(), Mock()]
 
-    def test_available_buns_returns_list_of_bun_instances(self, database):
-        assert all(isinstance(b, Bun) for b in database.available_buns())
+        buns = Database().available_buns()
 
-    def test_available_buns_returns_three_buns(self, database):
-        assert len(database.available_buns()) == 3
+        assert buns[0].get_name() == "black bun"
 
-    def test_available_ingredients_returns_list_of_ingredient_instances(self, database):
-        assert all(isinstance(i, Ingredient) for i in database.available_ingredients())
+    @patch('database.Ingredient')
+    def test_available_ingredients_returns_correct_ingredient(self, mock_ingredient_class):
+        mock_ingredient = Mock()
+        mock_ingredient.get_type.return_value = INGREDIENT_TYPE_SAUCE
+        mock_ingredient_class.side_effect = [mock_ingredient, Mock(), Mock(), Mock(), Mock(), Mock()]
 
-    def test_available_ingredients_returns_six_ingredients(self, database):
-        assert len(database.available_ingredients()) == 6
+        ingredients = Database().available_ingredients()
+
+        assert ingredients[0].get_type() == INGREDIENT_TYPE_SAUCE

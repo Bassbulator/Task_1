@@ -6,10 +6,6 @@ from ingredient_types import INGREDIENT_TYPE_SAUCE, INGREDIENT_TYPE_FILLING
 
 class TestIngredient:
 
-    @pytest.fixture
-    def ingredient(self):
-        return Ingredient(INGREDIENT_TYPE_SAUCE, "hot sauce", 50)
-
     @pytest.mark.parametrize("ingredient_type", [INGREDIENT_TYPE_SAUCE, INGREDIENT_TYPE_FILLING])
     def test_get_type_with_valid_type_returns_correct_type(self, ingredient_type):
         ingredient = Ingredient(ingredient_type, "item", 10)

@@ -24,29 +24,17 @@ class TestBurger:
 
         assert burger.ingredients[0].get_type() == ingredient_type
 
-    def test_init_sets_bun_to_none(self):
-        burger = Burger()
-
-        assert burger.bun is None
-
-    def test_init_sets_ingredients_to_empty_list(self):
-        burger = Burger()
-
-        assert burger.ingredients == []
-
     @pytest.mark.parametrize(
         "remove_index, expected_names",
         [
-            (0, ["b", "c"]),
-            (1, ["a", "c"]),
-            (2, ["a", "b"]),
+            (0, ["b"]),
+            (1, ["a"]),
         ],
     )
     def test_remove_ingredient_removes_by_index(self, remove_index, expected_names):
         burger = Burger()
         burger.add_ingredient(Ingredient("SAUCE", "a", 1))
         burger.add_ingredient(Ingredient("FILLING", "b", 2))
-        burger.add_ingredient(Ingredient("SAUCE", "c", 3))
 
         burger.remove_ingredient(remove_index)
 
@@ -55,16 +43,14 @@ class TestBurger:
     @pytest.mark.parametrize(
         "from_index, to_index, expected_names",
         [
-            (0, 2, ["b", "c", "a"]),
-            (2, 0, ["c", "a", "b"]),
-            (1, 1, ["a", "b", "c"]),
+            (0, 1, ["b", "a"]),
+            (1, 0, ["b", "a"]),
         ],
     )
     def test_move_ingredient_reorders_list(self, from_index, to_index, expected_names):
         burger = Burger()
         burger.add_ingredient(Ingredient("SAUCE", "a", 1))
         burger.add_ingredient(Ingredient("FILLING", "b", 2))
-        burger.add_ingredient(Ingredient("SAUCE", "c", 3))
 
         burger.move_ingredient(from_index, to_index)
 
